@@ -4,11 +4,11 @@ import re
 
 app = Flask(__name__)
 
-app.config.from_pyfile(app.root_path + '/config_defaults.py')
-if exists(app.root_path + '/config.py'):
-    app.config.from_pyfile(app.root_path + '/config.py')
+# app.config.from_pyfile(app.root_path + '/config_defaults.py')
+# if exists(app.root_path + '/config.py'):
+#     app.config.from_pyfile(app.root_path + '/config.py')
 
-import database
+# import database
 
 @app.route("/")
 def index():
