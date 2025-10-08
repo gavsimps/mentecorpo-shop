@@ -1,0 +1,131 @@
+:root {
+  --gutter: var(--gutter-mobile);
+  --container-pad-x: 16px;
+  --carousel-edge: 40px;
+  --theme-sticky-header-height: 0px;
+  --space-unit: 4px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: var(--gutter-desktop);
+    --container-pad-x: 30px;
+  }
+}
+
+@media (min-width: 1000px) {
+  :root {
+    --container-pad-x: 50px;
+  }
+}
+
+@media (min-width: 1300px) {
+  :root {
+    --gutter: var(--gutter-large);
+  }
+}
+
+@media (min-width: 1450px) {
+  :root {
+    --container-pad-x: 60px;
+  }
+}
+
+/* ---------------------------------
+                NAVIGATION
+------------------------------------ */
+pageheader {
+    display: block;
+}
+
+.pageheader {
+    position: relative;
+    z-index: 6000;
+    background: black;
+    color: white;
+}
+
+.logo-area {
+    display: flex;
+    position: relative;
+    z-index: 2;
+    align-items: center;
+    justify-content: space-between;
+    /* width: 100%; */
+    border-bottom: 1px solid black;
+    color: white;
+}
+
+.logo-left {
+    display: flex;
+    flex: 2 0 0;
+}
+
+.logo-right {
+    display: flex;
+    flex: 2 0 0;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.logo-right-inner {
+    display: flex;
+    align-items: center;
+}
+
+.nav-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-inline-end: 20px;
+}
+
+nav {
+    display: block;
+}
+
+ul {
+    margin: 0;
+    list-style: none;
+}
+
+.navigation {
+    text-align: center;
+    li {
+        list-style: none;
+        a {
+            display: inline-block;
+            position: relative;
+            padding: 18px;
+        }
+    }
+}
+
+.nav-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-nav {
+    position: relative;
+    z-index: 2;
+    line-height: 1.5;
+    border-bottom: 1px solid black;
+}
+
+/* ----------------------------------
+                GENERAL 
+------------------------------------ */
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: var(--container-pad-x);
+    padding-left: var(--container-pad-x);
+}
+
+.container-no-max {
+    max-width: none;
+}
+
+

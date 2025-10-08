@@ -6,6 +6,7 @@
     <!-- <link rel="shortcut icon" href="{{url_for('static', filename='images/herba.png')}}"> -->
 
     <!-- custom styles -->
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/normalize.css')}}">
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/styles.css')}}">
 
     <meta charset="UTF-8">
@@ -14,9 +15,43 @@
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-    <header>
+    <page-header>
         <!-- nav goes here -->
-    </header>
+        <div class="pageheader">
+            <div class="logo-area container">
+                <div class="logo-left">
+                    <p>Thingy</p>
+                </div>
+
+                <div class="logo-mid">
+                    <div class="logo-mid-inner">
+                        <a class="logo-link" href="/" title="MART">
+                            <img class="logo-image" src="" alt="Mario Art">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="logo-right">
+                    <div class="logo-right-inner">
+                        <a class="nav-link">Cart</a>
+                        <a class="nav-link">Account</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <nav>
+            <div class="main-nav navigation" role="navigation" aria-label="Primary">
+                <ul class="nav-list navigation container">
+                    <li><a>New Stuff</a></li>
+                    <li><a>Shop</a></li>
+                    <li><a>All</a></li>
+                </ul>
+            </div>
+        </nav>
+
+    </page-header>
 
     <!-- Begin page content -->
     <main>
@@ -27,7 +62,7 @@
     
     <footer>
         <div>
-            <!-- <span class="text-muted">I211 Project Flask App &copy; 2023</span> -->
+            <span>&copy; 2025</span>
         </div>
     </footer>
     <!-- scripts go here -->
