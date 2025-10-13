@@ -128,4 +128,32 @@ ul {
     max-width: none;
 }
 
+.product-flex {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  /* border: 1px solid black; */
+  width: 300px;
+  height: 300px;
+  margin: 5%;
+}
+
+.product-card-info {
+  margin-top: 5%;
+  margin-left: 5%;
+}
+
+.product-image {
+  width: 300px;
+  height: 300px;
+}
+
+/* ----------------------------------
+                INDEX 
+----------------------------------- */
 

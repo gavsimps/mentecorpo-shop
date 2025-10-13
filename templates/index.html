@@ -1,5 +1,18 @@
 {% extends "base.html" %}
 {% block title %}Title{% endblock %}
 {% block content %}
-    <p>Hi, this is the computer. I'm not doing that.</p>
+    <div class="container">
+        <div class="product-flex">
+            {% for x in featured %}
+            <div class="product-card">
+                <!-- <div class="product-card-top>"> -->
+                    <img class="product-image" src="{{url_for('static', filename='{}'.format(x[2]))}}">
+                <!-- </div> -->
+                <div class="product-card-info">
+                    <h3>{{x[1]}}</h3>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
