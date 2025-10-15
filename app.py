@@ -12,11 +12,17 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 import database, testdb
 
-@app.route("/")
+@app.route("/", methods=['GET','POST'])
 def index():
     featured = database.get_featured()
     print(featured)
     return render_template('index.html', featured=featured)
+
+@app.route("/login", methods=['POST'])
+def login():
+    pass
+
+@app.route("/restock")
 
 @app.teardown_appcontext
 def close_connection(exception):
