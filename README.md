@@ -25,5 +25,5 @@ A comission to create a website for online apparel brand **Mente-Corpo**.
 - printful api for purchases
 
 
-
+Domain Name - mentecorpo.com
 
