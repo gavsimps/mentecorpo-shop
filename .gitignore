@@ -3,6 +3,8 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+printful.txt
+
 # C extensions
 *.so
 
