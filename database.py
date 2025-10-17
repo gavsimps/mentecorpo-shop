@@ -3,6 +3,9 @@ from flask import g
 
 DATABASE = 'db/apparel.db'
 
+def get_connection():
+    conn = sqlite3.connect(DATABASE)
+
 # connection = sqlite3.connect("apparel.db")
 # crsr = connection.cursor()
 
@@ -13,10 +16,31 @@ def get_db():
     return db
 
 def get_featured():
-    connection = sqlite3.connect(DATABASE)
-    cursor = connection.cursor()
+    conn = get_connection()
     sql = """SELECT * FROM merchandise WHERE featured = 1"""
-    cursor.execute(sql)
-    feat = cursor.fetchall()
-    cursor.close()
-    return feat
+    with conn:
+        with conn.cursor() as cursor:
+            cursor.execute(sql)
+            feat = cursor.fetchall()
+            cursor.close()
+            return feat
+
+def get_all():
+    conn = get_connection()
+    sql = """SELECT * FROM merchandise"""
+    with conn:
+        with conn.cursor() as cursor:
+            cursor.execute(sql)
+            all_items = cursor.fetchall()
+            cursor.close()
+            return all_items
+
+def get_item(item_id):
+    conn = get_connection()
+    sql = """SELECT * FROM merchandise WHERE id = %s"""
+    with conn:
+        with conn.cursor() as cursor:
+            cursor.execute(sql, (item_id))
+            singular = cursor.fetchall()
+            cursor.close()
+            return singular

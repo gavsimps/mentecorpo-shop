@@ -12,11 +12,30 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 import database, testdb
 
+# INDEX
 @app.route("/", methods=['GET','POST'])
 def index():
     featured = database.get_featured()
     return render_template('index.html', featured=featured)
 
+# SHOPPING
+@app.route("/shop")
+def shop():
+    merch = database.get_all
+    return render_template("shop.html",merch=merch)
+
+@app.route("/shop/<item_id>")
+# make dynamic url later
+def item(item_id=None):
+    if item_id:
+        item_info = database.get_item(item_id)
+        return render_template('item.html',item_id=item_id)
+    else:
+        shop_items = database.get_all()
+        return render_template('shop.html', shop_items=shop_items)
+
+
+# ADMIN
 @app.route("/login", methods=['POST'])
 def login():
     pass

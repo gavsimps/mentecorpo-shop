@@ -4,14 +4,14 @@
     <div class="container">
         <div class="product-flex">
             {% for x in featured %}
-            <!-- <a class="merch" href=""> -->
+            <a class="merch" href="{{url_for('item', item_id=x[0])}}">
                 <div class="product-card">
                     <img class="product-image" src="{{url_for('static', filename='{}'.format(x[2]))}}">
                     <div class="product-card-info">
                         <h3>{{x[1]}}</h3>
                     </div>
                 </div>
-            <!-- </a> -->
+            </a>
             {% endfor %}
         </div>
     </div>
