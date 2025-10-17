@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Shop{% endblock %}
+{% block content %}
+    {% for item in merch %}
+        <p>{{item[1]}}</p>
+    {% endfor %}
+{% endblock %}
