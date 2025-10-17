@@ -29,7 +29,7 @@ def shop():
 def item(item_id=None):
     if item_id:
         item_info = database.get_item(item_id)
-        return render_template('item.html',item_id=item_id)
+        return render_template('item.html',item_info=item_info)
     else:
         shop_items = database.get_all()
         return render_template('shop.html', shop_items=shop_items)
