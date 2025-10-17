@@ -15,7 +15,6 @@ import database, testdb
 @app.route("/", methods=['GET','POST'])
 def index():
     featured = database.get_featured()
-    print(featured)
     return render_template('index.html', featured=featured)
 
 @app.route("/login", methods=['POST'])
