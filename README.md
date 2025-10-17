@@ -10,6 +10,8 @@ A comission to create a website for online apparel brand **Mente-Corpo**.
         - printful api connection
         - select charity at checkout to send money to
             - have to see how printful works for purchases
+        - generate popup data for each item
+            - some flask function so i dont need 500000000 html tags
     - contact
         - set up auto email
     - wallpapers
