@@ -21,8 +21,8 @@ def index():
 # SHOPPING
 @app.route("/shop")
 def shop():
-    merch = database.get_all
-    return render_template("shop.html",merch=merch)
+    merch = database.get_all()
+    return render_template("shop.html", merch=merch)
 
 @app.route("/shop/<item_id>")
 # make dynamic url later
