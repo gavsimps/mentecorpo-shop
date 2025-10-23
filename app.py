@@ -31,6 +31,51 @@ app.config['MERCH_FOLDER'] = MERCH_FOLDER
 # if exists(app.root_path + '/config.py'):
 #     app.config.from_pyfile(app.root_path + '/config.py')
 
+######################################################
+#                      PRINTFUL                      #
+######################################################
+def printful_request(endpoint, method="GET", data=None):
+    headers = {
+        "Authorization": f"Basic {os.getenv('PRINTFUL_API_KEY')}",
+        "Content-Type": "application/json"
+    }
+
+    url = f"{PRINTFUL_API_KEY}/{endpoint}"
+
+    response = requests.request(method, url, headers=headers, json=data)
+
+    if not response.ok:
+        return {"error": response.json()}, response.status_code
+    
+    return response.json(), response.status_code
+
+@app.route("/products", methods=["GET"])
+def get_products():
+    """Fetch product catalog"""
+    data, status = printful_request("products")
+    return jsonify(data), status
+
+@app.route("/sync/products", methods=["GET"])
+def get_synced_products():
+    """Fetch products synced to your Printful store"""
+    data, status = printful_request("store/products")
+    return jsonify(data), status
+
+@app.route("/order", methods=["POST"])
+def create_order():
+    """Create a new Printful order"""
+    order_data = request.get_json()
+    data, status = printful_request("orders", method="POST", data=order_data)
+    return jsonify(data), status
+
+
+
+
+
+##########################################
+#              WEBSITE PAGES             #
+#########################################
+
 # INDEX
 @app.route("/", methods=['GET','POST'])
 def index():
