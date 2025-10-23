@@ -2,11 +2,11 @@
 {% block title %}Shop{% endblock %}
 {% block content %}
     {% for item in merch %}
-        <a class="merch" href="{{url_for('item', item_id=item[0])}}">
+        <a class="merch" href="{{url_for('item', item_id=item.id)}}">
             <div class="product-card">
-                <img class="product-image" src="{{url_for('static', filename='{}'.format(item[2]))}}">
+                <img class="product-image" src="{{url_for('static', filename='{}'.format(item.image))}}">
                 <div class="product-card-info">
-                    <h3>{{item[1]}}</h3>
+                    <h3>{{item.name}}</h3>
                 </div>
             </div>
         </a>

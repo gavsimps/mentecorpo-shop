@@ -31,8 +31,9 @@ def insertClothing(id, name, image, product_type, size, color, price, in_stock, 
         sqlite_insert_blob_query = """ INSERT INTO merchandise
                                   (id, name, image, product_type, size, color, price, in_stock, amount_sold, featured, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
         # empPhoto = convertToBinaryData(image)
-        data_tuple = (id, name, image, product_type, size, color, price, in_stock, amount_sold, featured, date_created)
-        cursor.execute(sqlite_insert_blob_query, data_tuple)
+        # data_tuple = (id, name, image, product_type, size, color, price, in_stock, amount_sold, featured, date_created)
+        # cursor.execute(sqlite_insert_blob_query, data_tuple)
+        cursor.execute(sqlite_insert_blob_query)
         connection.commit()
         cursor.close()
     except sqlite3.Error as error:
@@ -42,7 +43,7 @@ def insertClothing(id, name, image, product_type, size, color, price, in_stock, 
             connection.close()
             print("the sqlite connection is closed")
 
-# insertClothing(1, "mario skin suit", "images/newUS.png", "skin", "large", "italian", "4.99", 1, 0, 1, "2025-10-10")
+insertClothing(1, "mario skin suit", "images/newUS.png", "skin", "large", "italian", "4.99", 1, 0, 1, "2025-10-10")
 # close the connection
 # connection.close()
 

@@ -4,11 +4,11 @@
     <div class="container">
         <div class="product-flex">
             {% for x in featured %}
-            <a class="merch" href="{{url_for('item', item_id=x[0])}}">
+            <a class="merch" href="{{url_for('item', item_id=x.id)}}">
                 <div class="product-card">
-                    <img class="product-image" src="{{url_for('static', filename='{}'.format(x[2]))}}">
+                    <img class="product-image" src="{{url_for('static', filename='{}'.format(x.image))}}">
                     <div class="product-card-info">
-                        <h3>{{x[1]}}</h3>
+                        <h3>{{x.name}}</h3>
                     </div>
                 </div>
             </a>
