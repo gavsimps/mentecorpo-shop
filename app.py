@@ -1,12 +1,19 @@
-from flask import Flask, render_template, url_for, request, redirect, g
+from flask import Flask, render_template, url_for, request, redirect, g, jsonify
+from dotenv import load_dotenv
 import os
 from os.path import exists
 import re
+import requests
 from sqlalchemy.sql import text, func
 from models import db, Merchandise
 from reset_db import reset_database
 
+load_dotenv()
+
 app = Flask(__name__)
+
+PRINTFUL_API_KEY = os.getenv("PRINTFUL_API_KEY")
+PRINTFUL_API_BASE = "https://api.printful.com"
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
