@@ -13,7 +13,7 @@ load_dotenv()
 app = Flask(__name__)
 
 PRINTFUL_API_KEY = os.getenv("PRINTFUL_API_KEY")
-PRINTFUL_API_BASE = "https://api.printful.com"
+PRINTFUL_API_BASE = "https://api.printful.com/v2"
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -36,11 +36,11 @@ app.config['MERCH_FOLDER'] = MERCH_FOLDER
 ######################################################
 def printful_request(endpoint, method="GET", data=None):
     headers = {
-        "Authorization": f"Basic {os.getenv('PRINTFUL_API_KEY')}",
+        "Authorization": f"Bearer {os.getenv('PRINTFUL_API_KEY')}",
         "Content-Type": "application/json"
     }
 
-    url = f"{PRINTFUL_API_KEY}/{endpoint}"
+    url = f"{PRINTFUL_API_BASE}/{endpoint}"
 
     response = requests.request(method, url, headers=headers, json=data)
 
@@ -52,13 +52,18 @@ def printful_request(endpoint, method="GET", data=None):
 @app.route("/products", methods=["GET"])
 def get_products():
     """Fetch product catalog"""
-    data, status = printful_request("products")
+    data, status = printful_request("catalog-products")
+    return jsonify(data), status
+
+@app.route("/store", methods=["GET"])
+def get_store_info():
+    data, status = printful_request("store")
     return jsonify(data), status
 
 @app.route("/sync/products", methods=["GET"])
 def get_synced_products():
     """Fetch products synced to your Printful store"""
-    data, status = printful_request("store/products")
+    data, status = printful_request("products")
     return jsonify(data), status
 
 @app.route("/order", methods=["POST"])
