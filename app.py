@@ -13,7 +13,8 @@ load_dotenv()
 app = Flask(__name__)
 
 PRINTFUL_API_KEY = os.getenv("PRINTFUL_API_KEY")
-PRINTFUL_API_BASE = "https://api.printful.com/v2"
+PRINTFUL_STORE_ID = os.getenv("PRINTFUL_STORE_ID")
+PRINTFUL_API_BASE = "https://api.printful.com/"
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -49,13 +50,13 @@ def printful_request(endpoint, method="GET", data=None):
     
     return response.json(), response.status_code
 
-# 17164892
 
+
+# CURRENTLY WORKS ACTUALLY 100!!!!!!
 @app.route("/products", methods=["GET"])
 def get_store_products():
     """Fetch products from your personal Printful store"""
-    store_id = 17164892
-    endpoint = f"stores/{store_id}/products"
+    endpoint = f"store/products"
     data, status = printful_request(endpoint)
     return jsonify(data), status
 
