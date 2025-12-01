@@ -49,15 +49,19 @@ def printful_request(endpoint, method="GET", data=None):
     
     return response.json(), response.status_code
 
+# 17164892
+
 @app.route("/products", methods=["GET"])
-def get_products():
-    """Fetch product catalog"""
-    data, status = printful_request("catalog-products")
+def get_store_products():
+    """Fetch products from your personal Printful store"""
+    store_id = 17164892
+    endpoint = f"stores/{store_id}/products"
+    data, status = printful_request(endpoint)
     return jsonify(data), status
 
 @app.route("/store", methods=["GET"])
 def get_store_info():
-    data, status = printful_request("store")
+    data, status = printful_request("stores")
     return jsonify(data), status
 
 @app.route("/sync/products", methods=["GET"])
