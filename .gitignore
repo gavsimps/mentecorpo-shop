@@ -3,6 +3,8 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+.vscode/
+.DS_Store
 printful.env
 
 # C extensions
