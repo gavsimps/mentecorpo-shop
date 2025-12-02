@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect, g, jsonify
+from flask import Flask, render_template, url_for, request, redirect, g, json, jsonify
 from dotenv import load_dotenv
 import os
 from os.path import exists
@@ -35,40 +35,36 @@ app.config['MERCH_FOLDER'] = MERCH_FOLDER
 ######################################################
 #                      PRINTFUL                      #
 ######################################################
-def printful_request(endpoint, method="GET", data=None):
-    headers = {
-        "Authorization": f"Bearer {os.getenv('PRINTFUL_API_KEY')}",
-        "Content-Type": "application/json"
-    }
-
+def printful_request(endpoint: str):
     url = f"{PRINTFUL_API_BASE}/{endpoint}"
-
-    response = requests.request(method, url, headers=headers, json=data)
-
-    if not response.ok:
-        return {"error": response.json()}, response.status_code
-    
-    return response.json(), response.status_code
-
-
+    response = requests.get(url, headers={
+        "Authorization": f"Bearer {PRINTFUL_API_KEY}"
+    })
+    return response.json()
 
 # CURRENTLY WORKS ACTUALLY 100!!!!!!
 @app.route("/products", methods=["GET"])
 def get_store_products():
     """Fetch products from your personal Printful store"""
     endpoint = f"store/products"
-    data, status = printful_request(endpoint)
-    return jsonify(data), status
+    data = printful_request(endpoint)
+    print(data)
+    products = {
+        item["id"]: {
+            "name": item.get("name"),
+            "thumbnail_url": item.get("thumbnail_url"),
+            "variants": item.get("variants"),
+            "synced": item.get("synced"),
+        }
+        for item in data.get("result", [])
+    }
+    all = jsonify(products)
+    print(all)
+    return jsonify(products)
 
 @app.route("/store", methods=["GET"])
 def get_store_info():
     data, status = printful_request("stores")
-    return jsonify(data), status
-
-@app.route("/sync/products", methods=["GET"])
-def get_synced_products():
-    """Fetch products synced to your Printful store"""
-    data, status = printful_request("products")
     return jsonify(data), status
 
 @app.route("/order", methods=["POST"])
@@ -89,14 +85,22 @@ def create_order():
 # INDEX
 @app.route("/", methods=['GET','POST'])
 def index():
+    # featured = get_store_products()
+    # print(featured)
     featured = Merchandise.query.filter(Merchandise.featured==True).order_by(Merchandise.date_created.desc()).all()
     return render_template('index.html', featured=featured)
 
 # SHOPPING
-@app.route("/shop")
+@app.route("/shop", methods=["GET"])
 def shop():
-    merch = Merchandise.query.order_by(Merchandise.name).all()
-    return render_template("shop.html", merch=merch)
+    url = "https://api.printful.com/store/products"
+    headers = {"Authorization": f"Bearer {PRINTFUL_API_KEY}"}
+    response = requests.get(url, headers=headers)
+
+    data = response.json()
+    # merch = get_store_products()
+    # merch = Merchandise.query.order_by(Merchandise.name).all()
+    return render_template("shop.html", merch=data["result"])
 
 @app.route("/shop/<int:item_id>")
 # make dynamic url later
@@ -114,10 +118,10 @@ def item(item_id=None):
 def login():
     pass
 
-with app.app_context():
-    db.drop_all()
-    db.create_all()
-    reset_database()
+# with app.app_context():
+#     db.drop_all()
+#     db.create_all()
+#     reset_database()
 
 if __name__ == "__main__":
     app.run(debug=True)
