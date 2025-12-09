@@ -4,9 +4,9 @@
     {% for item in merch %}
         <a class="merch" href="{{url_for('item', item_id=item.id)}}">
             <div class="product-card">
-                <img class="product-image" src="{{item.thumbnail_url}}" alt="{{item.name}}">
+                <img class="product-image" src="{{item.thumbnail}}" alt="{{item.name}}">
                 <div class="product-card-info">
-                    <h3>{{item.name}}</h3>s
+                    <h3>{{item.name}}</h3>
                 </div>
             </div>
         </a>

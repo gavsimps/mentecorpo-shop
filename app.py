@@ -49,18 +49,59 @@ def get_store_products():
     endpoint = f"store/products"
     data = printful_request(endpoint)
     print(data)
-    products = {
-        item["id"]: {
-            "name": item.get("name"),
-            "thumbnail_url": item.get("thumbnail_url"),
-            "variants": item.get("variants"),
-            "synced": item.get("synced"),
-        }
-        for item in data.get("result", [])
-    }
-    all = jsonify(products)
+    # products = {
+    #     item["id"]: {
+    #         "name": item.get("name"),
+    #         "thumbnail_url": item.get("thumbnail_url"),
+    #         "variants": item.get("variants"),
+    #         "synced": item.get("synced"),
+    #     }
+    #     for item in data.get("result", [])
+    # }
+    all = jsonify(data)
     print(all)
-    return jsonify(products)
+    return jsonify(data)
+
+def get_catalog():
+    endpoint = f"store/products"
+    catalog = printful_request(endpoint)["result"]
+    
+    result = []
+
+    for p in catalog:
+        product_id = p["id"]
+
+
+def priv_catalog():
+    endpoint = f"store/products"
+    catalog = printful_request(endpoint)["result"]
+    
+    result = []
+
+    for p in catalog:
+        product_id = p["id"]
+        detail = printful_request(f"store/products/{product_id}")["result"]
+        
+        variants = detail["sync_variants"]
+        
+        result.append({
+            "id": p["id"],
+            "name": p["name"],
+            "thumbnail": p["thumbnail_url"],
+            "variants": [
+                {
+                    "variant_id": v["id"],
+                    "name": v["name"],
+                    "price": v["retail_price"]
+                }
+                for v in variants
+            ]
+        })
+
+    print(result)
+
+    return result
+
 
 @app.route("/store", methods=["GET"])
 def get_store_info():
@@ -93,14 +134,16 @@ def index():
 # SHOPPING
 @app.route("/shop", methods=["GET"])
 def shop():
-    url = "https://api.printful.com/store/products"
-    headers = {"Authorization": f"Bearer {PRINTFUL_API_KEY}"}
-    response = requests.get(url, headers=headers)
+    # url = "https://api.printful.com/store/products"
+    # headers = {"Authorization": f"Bearer {PRINTFUL_API_KEY}"}
+    # response = requests.get(url, headers=headers)
 
-    data = response.json()
+    # data = response.json()
+    # just this one if working
+    data2 = priv_catalog()
     # merch = get_store_products()
     # merch = Merchandise.query.order_by(Merchandise.name).all()
-    return render_template("shop.html", merch=data["result"])
+    return render_template("shop.html", merch=data2)
 
 @app.route("/shop/<int:item_id>")
 # make dynamic url later
