@@ -15,12 +15,6 @@ app = Flask(__name__)
 PRINTFUL_API_KEY = os.getenv("PRINTFUL_API_KEY")
 PRINTFUL_API_BASE = "https://api.printful.com"
 
-app.config['TEMPLATES_AUTO_RELOAD'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db.init_app(app)
-
 # File Saving Path
 MERCH_FOLDER = os.path.join(app.root_path, 'static', 'merchpics')
 PHOTO_EXTENSIONS = {'png', 'jpg', 'webp'}
@@ -77,37 +71,10 @@ def create_order():
 #########################################
 
 # INDEX
-@app.route("/", methods=['GET','POST'])
+@app.route("/")
 def index():
-    featured = Merchandise.query.filter(Merchandise.featured==True).order_by(Merchandise.date_created.desc()).all()
-    return render_template('index.html', featured=featured)
+    return render_template('index.html')
 
-# SHOPPING
-@app.route("/shop")
-def shop():
-    merch = Merchandise.query.order_by(Merchandise.name).all()
-    return render_template("shop.html", merch=merch)
-
-@app.route("/shop/<int:item_id>")
-# make dynamic url later
-def item(item_id=None):
-    if item_id:
-        item_info = Merchandise.query.filter(Merchandise.id==item_id).first()
-        return render_template('item.html', item_info=item_info)
-    else:
-        merch = Merchandise.query.order_by(Merchandise.name).all()
-        return render_template("shop.html", merch=merch)
-
-
-# ADMIN
-@app.route("/login", methods=['POST'])
-def login():
-    pass
-
-with app.app_context():
-    db.drop_all()
-    db.create_all()
-    reset_database()
 
 if __name__ == "__main__":
     app.run(debug=True)
