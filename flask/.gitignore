@@ -3,7 +3,10 @@ __pycache__/
 *.py[codz]
 *$py.class
 
-printful.env
+.env
+default.conf
+dockerfile.flask
+dockerfile.nginx
 
 # C extensions
 *.so
