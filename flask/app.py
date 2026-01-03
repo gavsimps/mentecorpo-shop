@@ -4,7 +4,6 @@ import os
 from os.path import exists
 import re
 import requests
-from sqlalchemy.sql import text, func
 from models import db, Merchandise
 from reset_db import reset_database
 
@@ -77,4 +76,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run()
