@@ -27,31 +27,72 @@ app.config['MERCH_FOLDER'] = MERCH_FOLDER
 ######################################################
 #                      PRINTFUL                      #
 ######################################################
-def printful_request(endpoint, method="GET", data=None):
-    headers = {
-        "Authorization": f"Basic {os.getenv('PRINTFUL_API_KEY')}",
-        "Content-Type": "application/json"
-    }
+def printful_request(endpoint: str):
+    url = f"{PRINTFUL_API_BASE}/{endpoint}"
+    response = requests.get(url, headers={
+        "Authorization": f"Bearer {PRINTFUL_API_KEY}"
+    })
+    return response.json()
 
-    url = f"{PRINTFUL_API_KEY}/{endpoint}"
-
-    response = requests.request(method, url, headers=headers, json=data)
-
-    if not response.ok:
-        return {"error": response.json()}, response.status_code
-    
-    return response.json(), response.status_code
-
+# CURRENTLY WORKS ACTUALLY 100!!!!!!
 @app.route("/products", methods=["GET"])
-def get_products():
-    """Fetch product catalog"""
-    data, status = printful_request("products")
-    return jsonify(data), status
+def get_store_products():
+    """Fetch products from your personal Printful store"""
+    endpoint = f"store/products"
+    data = printful_request(endpoint)
+    print(data)
+    # products = {
+    #     item["id"]: {
+    #         "name": item.get("name"),
+    #         "thumbnail_url": item.get("thumbnail_url"),
+    #         "variants": item.get("variants"),
+    #         "synced": item.get("synced"),
+    #     }
+    #     for item in data.get("result", [])
+    # }
+    all = jsonify(data)
+    print(all)
+    return jsonify(data)
 
-@app.route("/sync/products", methods=["GET"])
-def get_synced_products():
-    """Fetch products synced to your Printful store"""
-    data, status = printful_request("store/products")
+def get_catalog():
+    endpoint = f"store/products"
+    catalog = printful_request(endpoint)["result"]
+
+
+def priv_catalog():
+    endpoint = f"store/products"
+    catalog = printful_request(endpoint)["result"]
+    
+    result = []
+
+    for p in catalog:
+        product_id = p["id"]
+        detail = printful_request(f"store/products/{product_id}")["result"]
+        
+        variants = detail["sync_variants"]
+        
+        result.append({
+            "id": p["id"],
+            "name": p["name"],
+            "thumbnail": p["thumbnail_url"],
+            "variants": [
+                {
+                    "variant_id": v["id"],
+                    "name": v["name"],
+                    "price": v["retail_price"]
+                }
+                for v in variants
+            ]
+        })
+
+    print(result)
+
+    return result
+
+
+@app.route("/store", methods=["GET"])
+def get_store_info():
+    data, status = printful_request("stores")
     return jsonify(data), status
 
 @app.route("/order", methods=["POST"])
@@ -62,17 +103,15 @@ def create_order():
     return jsonify(data), status
 
 
-
-
-
 ##########################################
 #              WEBSITE PAGES             #
 #########################################
 
 # INDEX
-@app.route("/")
+@app.route("/", methods=['GET','POST'])
 def index():
-    return render_template('index.html')
+    data2 = priv_catalog()
+    return render_template('index.html', merch=data2)
 
 
 if __name__ == "__main__":
