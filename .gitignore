@@ -5,8 +5,6 @@ __pycache__/
 
 .env
 default.conf
-dockerfile.flask
-dockerfile.nginx
 
 # C extensions
 *.so
