@@ -1,22 +1,28 @@
 {% extends "base.html" %}
 {% block title %}MenteCorpo{% endblock %}
 {% block content %}
+    <div class="cs-cont">
+        <div class="cs-box">
+            <h2 class="comingsoon">COMING SOON</h2>
+        </div>
+    </div>
+    
     <div class="container-lp">
-        <div class="gallery">
-            <ul class="cards">
+        <div class="carousel">
+            <div class="cards">
                 {% for item in merch %}
-                <li>
-                    <a class="merch" href="{{url_for('index', item_id=item.id)}}">
-                        <div class="product-card">
+                <div class="card">
+                    <!-- <a class="merch" href="{{url_for('index', item_id=item.id)}}"> -->
+                        <div class="product-info">
                             <img class="product-image" src="{{item.thumbnail}}" alt="{{item.name}}">
-                            <div class="product-card-info">
-                                <h3>{{item.name}}</h3>
+                            <div class="content">
+                                <h3 class="title">{{item.name}}</h3>
                             </div>
                         </div>
-                    </a>
-                </li>
+                    </div>
+                <!-- </a> -->
                 {% endfor %}
-            </ul>
+            </div>
         </div>
         <img class="logobg" src="{{url_for('static', filename='images/Logo/Mente-CorpoTransparentBG.png')}}" alt="alt mentecorpo logo">
     </div>

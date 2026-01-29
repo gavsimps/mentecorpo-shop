@@ -93,8 +93,6 @@ def priv_catalog():
             ]
         })
 
-    print(result)
-
     return result
 
 
@@ -117,7 +115,7 @@ def create_order():
 
 # INDEX
 @app.route("/", methods=['GET','POST'])
-# @cache.cached(timeout=50)
+@cache.cached(timeout=50)
 def index():
     data2 = priv_catalog()
     return render_template('index.html', merch=data2)
