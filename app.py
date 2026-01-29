@@ -5,19 +5,20 @@ import os
 from os.path import exists
 import re
 import requests
+import json
 
-config = {
-    "DEBUG": True,
-    "CACHE_TYPE": "SimpleCache",
-    "CACHE_DEFAULT_TIMEOUT": 300
-}
+# config = {
+#     "DEBUG": True,
+#     "CACHE_TYPE": "SimpleCache",
+#     "CACHE_DEFAULT_TIMEOUT": 300
+# }
 
 load_dotenv()
 
 app = Flask(__name__)
 
-app.config.from_mapping(config)
-cache = Cache(app)
+# app.config.from_mapping(config)
+# cache = Cache(app)
 
 PRINTFUL_API_KEY = os.getenv("PRINTFUL_API_KEY")
 PRINTFUL_API_BASE = "https://api.printful.com"
@@ -70,26 +71,36 @@ def get_catalog():
 def priv_catalog():
     endpoint = f"store/products"
     catalog = printful_request(endpoint)["result"]
-    
+
+    # Ensure catalog is a list of dicts
+    if isinstance(catalog, str):
+        catalog = json.loads(catalog)
+
     result = []
 
     for p in catalog:
-        product_id = p["id"]
+        # Safety check: skip if not dict
+        if not isinstance(p, dict):
+            continue
+
+        product_id = p.get("id")
+        if not product_id:
+            continue
+
         detail = printful_request(f"store/products/{product_id}")["result"]
-        
-        variants = detail["sync_variants"]
-        
+        variants = detail.get("sync_variants", [])
+
         result.append({
-            "id": p["id"],
-            "name": p["name"],
-            "thumbnail": p["thumbnail_url"],
+            "id": p.get("id"),
+            "name": p.get("name"),
+            "thumbnail": p.get("thumbnail_url"),
             "variants": [
                 {
-                    "variant_id": v["id"],
-                    "name": v["name"],
-                    "price": v["retail_price"]
+                    "variant_id": v.get("id"),
+                    "name": v.get("name"),
+                    "price": v.get("retail_price")
                 }
-                for v in variants
+                for v in variants if isinstance(v, dict)
             ]
         })
 
@@ -115,7 +126,7 @@ def create_order():
 
 # INDEX
 @app.route("/", methods=['GET','POST'])
-@cache.cached(timeout=50)
+# @cache.cached(timeout=50)
 def index():
     data2 = priv_catalog()
     return render_template('index.html', merch=data2)
