@@ -178,16 +178,6 @@ ul {
 }
 
 /* ----------------------------------
-              MOBILE NAV
------------------------------------ */
-@media (max-width: 450px) {
-  .logo-image {
-    height: 80px;
-    width: 100px;
-  }
-}
-
-/* ----------------------------------
                 INDEX 
 ----------------------------------- */
 .container-lp {
@@ -291,4 +281,75 @@ ul {
 
 
 
+
+/* ----------------------------------
+              MOBILE NAV
+----------------------------------- */
+/* height instance */
+@media screen and (max-height: 830px) {
+  .logo-image {
+    height: 125px;
+    width: 150px;
+  }
+
+  .card {
+    flex: 0 0 auto;
+    width: 350px;
+  }
+
+  .comingsoon {
+    font-size: 50px;
+  }
+}
+
+/* large tablets */
+@media screen and (max-width: 1030px) {
+  .logo-image {
+    height: 125px;
+    width: 150px;
+  }
+
+  .card {
+    flex: 0 0 auto;
+    width: 350px;
+  }
+
+  .comingsoon {
+    font-size: 50px;
+  }
+}
+
+/* medium tablets */
+@media screen and (max-width: 769px) {
+  .logo-image {
+    height: 125px;
+    width: 150px;
+  }
+
+  .card {
+    flex: 0 0 auto;
+    width: 300px;
+  }
+
+  .comingsoon {
+    font-size: 40px;
+  }
+}
+
+/* phone styles */
+@media screen and (max-width: 481px) {
+  .logo-image {
+    height: 125px;
+    width: 100px;
+  }
+
+  .card {
+    flex: 0 0 auto;
+    width: 250px;
+  }
+
+  .comingsoon {
+    font-size: 30px;
+  }
+}
 

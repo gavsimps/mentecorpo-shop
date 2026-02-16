@@ -7,18 +7,18 @@ import re
 import requests
 import json
 
-# config = {
-#     "DEBUG": True,
-#     "CACHE_TYPE": "SimpleCache",
-#     "CACHE_DEFAULT_TIMEOUT": 300
-# }
+config = {
+    "DEBUG": True,
+    "CACHE_TYPE": "SimpleCache",
+    "CACHE_DEFAULT_TIMEOUT": 300
+}
 
 load_dotenv()
 
 app = Flask(__name__)
 
-# app.config.from_mapping(config)
-# cache = Cache(app)
+app.config.from_mapping(config)
+cache = Cache(app)
 
 PRINTFUL_API_KEY = os.getenv("PRINTFUL_API_KEY")
 PRINTFUL_API_BASE = "https://api.printful.com"
@@ -126,7 +126,7 @@ def create_order():
 
 # INDEX
 @app.route("/", methods=['GET','POST'])
-# @cache.cached(timeout=50)
+@cache.cached(timeout=50)
 def index():
     data2 = priv_catalog()
     return render_template('index.html', merch=data2)
